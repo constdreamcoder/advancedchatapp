@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 
 // 1대 1 채팅방 생성 및 기존 1대1 방 접속하는 컨트롤러
 const accessChat = asyncHandler(async (req, res) => {
-  const { userId } = req.body; // 현재 로그인된 사람
+  const { userId } = req.body; // 우리가 보낸 유저 아이디
 
   // 로그인이 안되어 있는 경우
   if (!userId) {
