@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const path = require("path");
 
 const app = express(); // express 인스턴스
 dotenv.config();
@@ -15,13 +16,31 @@ connectDB();
 // 클라이언트로부터 받은 파일을 json 파일로 받는다는 의미
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API is running Successfully.");
-});
+// app.get("/", (req, res) => {
+//   res.send("API is running Successfully.");
+// });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+
+// --------------------------deployment------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running Successfully.");
+  });
+}
+
+// --------------------------deployment------------------------------
 
 app.use(notFound);
 app.use(errorHandler);
