@@ -17,7 +17,7 @@ const ChatProvider = ({ children }) => {
 
     // 로그인이 되어있지 않으면 로그인페이지(메인 페이지)로 이동
     if (!userInfo) {
-      // history.push("/");
+      history.push("/");
     }
   }, [history]);
 
